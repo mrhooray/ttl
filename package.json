@@ -1,0 +1,32 @@
+{
+  "name": "ttl",
+  "version": "1.0.0",
+  "description": "Simple in-memory cache for JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp jshint && istanbul cover -x gulpfile.js --print detail gulp test && istanbul check-coverage --branches=100 --lines=100"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrhooray/ttl.git"
+  },
+  "keywords": [
+    "cache",
+    "caching",
+    "memory",
+    "in-memory",
+    "ttl"
+  ],
+  "author": "Rui Hu <code@mrhooray>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrhooray/ttl/issues"
+  },
+  "homepage": "https://github.com/mrhooray/ttl",
+  "devDependencies": {
+    "gulp": "^3.8.8",
+    "gulp-jshint": "^1.8.5",
+    "gulp-mocha": "^1.1.1",
+    "istanbul": "^0.3.2"
+  }
+}
