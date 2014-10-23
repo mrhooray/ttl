@@ -3,4 +3,5 @@
 .npmignore
 .travis.yml
 gulpfile.js
+coverage/
 test/
