@@ -1,6 +1,6 @@
 {
   "name": "ttl",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Simple in-memory cache for JavaScript",
   "main": "index.js",
   "scripts": {
