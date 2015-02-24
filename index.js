@@ -33,6 +33,7 @@ Cache.prototype.put = function (key, val, ttl) {
       this.del(key);
     }.bind(this), ttl)
   };
+  this._store[key].timeout.unref();
   this._size += 1;
 
   this.emit('put', key, val, ttl);
