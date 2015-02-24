@@ -5,7 +5,9 @@ function Cache(opts) {
   opts = opts || {};
 
   this._store = {};
+  this._size = 0;
   this._ttl = Number(opts.ttl);
+  this._capacity = Number(opts.capacity);
 }
 
 util.inherits(Cache, events.EventEmitter);
@@ -13,6 +15,11 @@ util.inherits(Cache, events.EventEmitter);
 Cache.prototype.put = function (key, val, ttl) {
   if (key === undefined || val === undefined) {
     return;
+  }
+
+  if (!this._store[key] && this.size() >= this._capacity) {
+      this.emit('drop', key, val, ttl);
+      return;
   }
 
   ttl = ttl === undefined ? this._ttl : Number(ttl);
@@ -26,6 +33,7 @@ Cache.prototype.put = function (key, val, ttl) {
       this.del(key);
     }.bind(this), ttl)
   };
+  this._size += 1;
 
   this.emit('put', key, val, ttl);
 };
@@ -54,6 +62,7 @@ Cache.prototype.del = function (key) {
 
     clearTimeout(this._store[key].timeout);
     delete this._store[key];
+    this._size -= 1;
     this.emit('del', key, val);
 
     return val;
@@ -66,7 +75,11 @@ Cache.prototype.clear = function () {
   }.bind(this));
 };
 
-Cache.prototype.size = function () {
+Cache.prototype.size = function (accurate) {
+  if (!accurate) {
+      return this._size;
+  }
+
   return Object.keys(this._store).reduce(function(size, key) {
     return size + (this.get(key) !== undefined ? 1 : 0);
   }.bind(this), 0);
