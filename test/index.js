@@ -9,6 +9,23 @@ describe('cache', function () {
     assert.strictEqual(typeof Cache, 'function');
   });
 
+  it('should honor capacity limit', function (done) {
+    var cache = new Cache({
+        capacity: 1
+    });
+
+    cache.on('drop', function (k, v, t) {
+        assert.strictEqual(k, key);
+        assert.strictEqual(v, val);
+        assert.strictEqual(t, ttl);
+
+        done();
+    });
+
+    cache.put(key + key, val, ttl);
+    cache.put(key, val, ttl);
+  });
+
   it('put should use default ttl', function (done) {
     var cache = new Cache({
       ttl: ttl
@@ -139,14 +156,14 @@ describe('cache', function () {
     assert.strictEqual(cache.del(key), val);
   });
 
-  it('size should return number of valid key/value pairs', function () {
+  it('size should return number of valid key/value pairs when accurate is supplied', function () {
     var cache = new Cache();
 
     cache.put(key, val, ttl);
     cache.put(key + key, val, ttl);
     cache._store[key + key].expire = Date.now() - 1;
 
-    assert.strictEqual(cache.size(), 1);
+    assert.strictEqual(cache.size(true), 1);
   });
 
   it('clear should remove all key/value pairs', function () {
