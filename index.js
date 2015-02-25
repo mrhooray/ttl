@@ -7,7 +7,9 @@ function Cache(opts) {
   this._store = {};
   this._size = 0;
   this._ttl = Number(opts.ttl);
-  this._capacity = Number(opts.capacity);
+  this._capacity = Infinity;
+
+  this.setCapacity(opts.capacity);
 }
 
 util.inherits(Cache, events.EventEmitter);
@@ -84,6 +86,12 @@ Cache.prototype.size = function (accurate) {
   return Object.keys(this._store).reduce(function(size, key) {
     return size + (this.get(key) !== undefined ? 1 : 0);
   }.bind(this), 0);
+};
+
+Cache.prototype.setCapacity = function (capacity) {
+    if (typeof capacity === 'number' && capacity >= 0) {
+        this._capacity = capacity;
+    }
 };
 
 function now() {
