@@ -56,7 +56,7 @@ Cache.prototype.get = function (key) {
     this.emit('miss', key);
   }
 
-  return rec && rec.val;
+  return (rec && rec.val) || undefined;
 };
 
 Cache.prototype.del = function (key) {
@@ -73,17 +73,26 @@ Cache.prototype.del = function (key) {
 };
 
 Cache.prototype.clear = function () {
-  Object.keys(this._store).forEach(function(key) {
+  this.keys().forEach(function(key) {
     this.del(key);
   }.bind(this));
 };
+
+Cache.prototype.keys = function () {
+  return Object.keys(this._store);
+}
+
+
+Cache.prototype.keyStartsWith = function (prefix) {
+  return Object.keys(this._store).filter(key => key.startsWith(prefix));
+}
 
 Cache.prototype.size = function (accurate) {
   if (!accurate) {
       return this._size;
   }
 
-  return Object.keys(this._store).reduce(function(size, key) {
+  return this.keys().reduce(function(size, key) {
     return size + (this.get(key) !== undefined ? 1 : 0);
   }.bind(this), 0);
 };
