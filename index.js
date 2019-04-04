@@ -56,7 +56,7 @@ Cache.prototype.get = function (key) {
     this.emit('miss', key);
   }
 
-  return rec && rec.val;
+  return (rec && rec.val) || undefined;
 };
 
 Cache.prototype.del = function (key) {
