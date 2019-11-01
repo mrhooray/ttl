@@ -37,7 +37,6 @@ describe('cache', function () {
       assert.strictEqual(t, ttl);
 
       assert.strictEqual(cache.get(key), val);
-      assert.strictEqual(cache._store[key].timeout._idleTimeout, -1);
 
       done();
     });
@@ -54,7 +53,6 @@ describe('cache', function () {
       assert.strictEqual(t, ttl);
 
       assert.strictEqual(cache.get(key), val);
-      assert.strictEqual(cache._store[key].timeout._idleTimeout, -1);
 
       done();
     });
